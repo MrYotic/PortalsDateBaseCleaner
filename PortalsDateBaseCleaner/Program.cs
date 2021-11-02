@@ -12,6 +12,7 @@ namespace PortalsDateBaseCleaner
         static void Main(string[] args)
         {
             DateTime startTime = new DateTime();
+            int crashLine = 0;
             try
             {
                 List<string> rL = new List<string>();
@@ -23,6 +24,7 @@ namespace PortalsDateBaseCleaner
                 List<List<string>> arg = lines.Select(x => x.Split(new string[1] { "||" }, StringSplitOptions.None).Select(c => c.Trim()).ToList()).ToList();
                 for (int i = 0; i < lines.Count; i++)
                 {
+                    crashLine = i;
                     if (arg[i].Count == 11)
                     {
                         List<string> fA = arg[i][0].Split(' ').ToList();
@@ -84,7 +86,7 @@ namespace PortalsDateBaseCleaner
                 rL.AddRange(unChecked.Select(x => Pad(18, x.Coord.x + " " + x.Coord.z) + "|| " + Pad(12, x.NCoord.x + " " + x.NCoord.z) + "||"));
                 rL.AddRange(Break.Select(x => Pad(18, x.Coord.x + " " + x.Coord.y + " " + x.Coord.z) + "|| " + Pad(12, x.NCoord.x + " " + x.NCoord.z) + "|| " + Pad(8, x.Date) + "|| " + Pad(4, x.Break == true ? "Yes" : "No") + "|| " + Pad(7, x.Portal) + "|| " + Pad(5, x.Live == true ? "Yes" : "No") + "|| " + Pad(4, x.Pvp == true ? "Yes" : "No") + "|| " + Pad(5, x.Team) + "|| " + Pad(3, (x.Spawner == -1 ? "??" : x.Spawner.ToString())) + "|| " + Pad(4, x.Secret == true ? "Yes" : "No") + "|| " + (x.Gen == true ? "Com" : "Def") + x.Comment));
                 rL.AddRange(Def.Select(x => Pad(18, x.Coord.x + " " + x.Coord.y + " " + x.Coord.z) + "|| " + Pad(12, x.NCoord.x + " " + x.NCoord.z) + "|| " + Pad(8, x.Date) + "|| " + Pad(4, x.Break == true ? "Yes" : "No") + "|| " + Pad(7, x.Portal) + "|| " + Pad(5, x.Live == true ? "Yes" : "No") + "|| " + Pad(4, x.Pvp == true ? "Yes" : "No") + "|| " + Pad(5, x.Team) + "|| " + Pad(3, (x.Spawner == -1 ? "??" : x.Spawner.ToString())) + "|| " + Pad(4, x.Secret == true ? "Yes" : "No") + "|| " + (x.Gen == true ? "Com" : "Def") + x.Comment));
-                rL.AddRange(unFined.Select(x => Pad(18, x.Coord.x + " " + (x.Coord.y != -1 ? (x.Coord.y + " ") : "") + x.Coord.z) + "|| " + Pad(12, x.NCoord.x + " " + x.NCoord.z)));
+                rL.AddRange(unFined.Select(x => Pad(18, x.Coord.x + " " + (x.Coord.y != -1 ? (x.Coord.y + " ") : "") + x.Coord.z) + "|| " + Pad(12, x.NCoord.x + " " + x.NCoord.z) + "|| 1.8.3   || ??  || ??     || ??   || ??  || ??   || ?? || ??  || ??"));
 
                 Bitmap bitmap = new Bitmap(2000, 2000);
                 Graphics g = Graphics.FromImage(bitmap);
@@ -113,7 +115,7 @@ namespace PortalsDateBaseCleaner
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e + "\n String " + crashLine + " have error");
             }
             Console.WriteLine(DateTime.Now - startTime);
             Console.ReadLine();
